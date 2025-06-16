@@ -32,11 +32,14 @@ selection_ids = UIDOC.Selection.GetElementIds()
 if not selection_ids:
     alert("Please select a line to create a ducts network.")
     sys.exit()
-selected_model_lines = [
-    DOC.GetElement(eid) \
-    for eid in selection_ids \
-    if isinstance(DOC.GetElement(eid), DB.ModelCurve)
-]
+selected_model_lines = []
+for sel_id in selection_ids:
+    element = DOC.GetElement(sel_id)
+    if isinstance(element, DB.ModelLine):
+        selected_model_lines.append(element)
+    else:
+        alert("Please select only model lines to create a ducts network.")
+        sys.exit()
 
 # Ask user to select a command to create MEP network
 MEP_NETWORKS = [
@@ -75,6 +78,10 @@ try:
 except:
     alert("User cancelled the operation.")
     sys.exit()
+if not all(flexform_data):
+    alert("Please select all required fields to create a MEP network.")
+    sys.exit()
+    
 # Unpack the flexform data
 mep_network_type_id, mep_network_system_id, level_id = flexform_data
 

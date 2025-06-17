@@ -78,7 +78,7 @@ try:
 except:
     alert("User cancelled the operation.")
     sys.exit()
-if not all(flexform_data):
+if not any(flexform_data):
     alert("Please select all required fields to create a MEP network.")
     sys.exit()
     
